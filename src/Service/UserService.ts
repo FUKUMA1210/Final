@@ -1,5 +1,5 @@
 import { Service } from "../abstract/Service";
-import { Student } from "../interfaces/Student";
+import { Student } from "../interfaces/comments";
 import { logger } from "../middlewares/log";
 import { studentsModel } from "../orm/schemas/studentSchemas";
 import { Document } from "mongoose"

@@ -1,5 +1,5 @@
 import { model, Schema } from "mongoose";
-import { Student } from "../../interfaces/Student";
+import { Student } from "../../interfaces/comments";
 
 export const studentsSchemas = new Schema<Student>({
     userName:{ type: String, required: true },
