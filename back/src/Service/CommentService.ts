@@ -1,49 +1,48 @@
-import { Comment } from "./CommentModel";
-
-import { Comment } from "./CommentModel";
+import { CommentModel } from "../models/CommentModel";
 
 export class CommentService {
-  // 新增留言
-  async createComment(commentData: { username: string; message: string; postId: string }) {
-    const { username, message, postId } = commentData;
-
-    if (!message || !postId) {
-      throw new Error("缺少必要的留言資料");
+    async addComment(data: { username: string; message: string }) {
+        try {
+            const newComment = await CommentModel.create(data);
+            return { code: 201, message: "Comment added", body: newComment };
+        } catch (error) {
+            return { code: 500, message: "Server error", body: null };
+        }
     }
 
-    const newComment = new Comment({
-      username,
-      message,
-      postId,
-      createdAt: new Date(),
-    });
-
-    return await newComment.save();
-  }
-
-  // 更新留言
-  async updateComment(commentId: string, newMessage: string) {
-    const comment = await Comment.findById(commentId);
-    if (!comment) {
-      throw new Error("留言不存在");
+    async updateComment(commentId: string, data: { message: string }) {
+        try {
+            const updatedComment = await CommentModel.findByIdAndUpdate(
+                commentId,
+                { message: data.message },
+                { new: true }
+            );
+            if (!updatedComment) return { code: 404, message: "Comment not found", body: null };
+            return { code: 200, message: "Comment updated", body: updatedComment };
+        } catch (error) {
+            return { code: 500, message: "Server error", body: null };
+        }
     }
 
-    // 更新留言內容
-    comment.message = newMessage;
-    comment.updatedAt = new Date();
-    return await comment.save();
-  }
-
-  // 刪除留言
-  async deleteComment(commentId: string) {
-    const comment = await Comment.findById(commentId);
-    if (!comment) {
-      throw new Error("留言不存在");
+    async deleteComment(commentId: string) {
+        try {
+            const deletedComment = await CommentModel.findByIdAndDelete(commentId);
+            if (!deletedComment) return { code: 404, message: "Comment not found", body: null };
+            return { code: 200, message: "Comment deleted", body: null };
+        } catch (error) {
+            return { code: 500, message: "Server error", body: null };
+        }
     }
 
-    // 刪除留言
-    await Comment.findByIdAndDelete(commentId);
-    return { message: "留言已刪除", commentId };
-  }
+    async getCommentsByUsername(username: string) {
+        try {
+            const comments = await CommentModel.find({ username });
+            if (comments.length === 0) return { code: 404, message: "No comments found for this user", body: null };
+            return { code: 200, message: "Comments retrieved", body: comments };
+        } catch (error) {
+            return { code: 500, message: "Server error", body: null };
+        }
+    }
 }
+
 
