@@ -1,6 +1,6 @@
-export interface comments{
-    _id?: string,
-    username: string,
-    messenge: String,
+export interface Comment {
+    _id?: string;
+    username: string;
+    message: string;
     createdAt: Date;
-}
+  }
