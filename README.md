@@ -1,50 +1,22 @@
-# React + TypeScript + Vite
+## 專案主題
+留言板
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 專案目標
+本專案的目的是設計並實作一個簡易的留言板系統，為使用者提供便捷的文字交流平台。  
 
-Currently, two official plugins are available:
+主要目標包括：  
+  - 提供清晰直觀的界面，方便使用者快速發表留言。  
+  - 支援留言的編輯、刪除和回覆功能，促進互動討論。   
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 技術選擇原因
+  - 使用 HTML、CSS 和 JavaScript 實現頁面設計與互動功能，簡單易用且具良好相容性。  
+  - 引入框架 React 提高開發效率與程式結構可讀性。  
+  - 採用 Node.js 及 Express 建立伺服器，支援非同步操作並適合高並發應用。  
+  - 使用資料庫 MongoDB 存取留言數據，確保數據完整性與快速查詢能力。   
 
-## Expanding the ESLint configuration
+## 架構說明
+  1. **前端**：提供使用者操作介面，負責處理留言的新增、編輯、刪除和回覆等功能。  
+  2. **後端**：處理業務邏輯與數據存取，通過 API 接收前端請求並返回結果。  
+  3. **資料庫**：存儲所有留言、回覆與使用者相關數據，支援快速讀取與更新操作。  
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
 
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
-
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
