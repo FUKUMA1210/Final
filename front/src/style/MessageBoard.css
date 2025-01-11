@@ -1,0 +1,149 @@
+.message-board {
+    max-width: 1000px; /* 設定留言板最大寬度 */
+    margin: 0 auto;  /* 置中留言板 */
+    font-family: Arial, sans-serif; /* 字型 */
+    line-height: 1.5; /* 行距 */
+}
+
+h1 {
+    font-size: 50px; /* 標題字型大小 */
+    margin-bottom: 20px; /* 與下方元素的間距 */
+    text-align: left; /* 文字靠左對齊 */
+}
+
+.comment-list {
+    margin-bottom: 20px; /* 留言列表與輸入框的間距 */
+}
+
+.comment {
+    border: 1px solid #ddd; /* 留言框的邊框 */
+    border-radius: 8px; /* 圓角邊框 */
+    padding: 15px; /* 留言框的內距 */
+    margin-bottom: 15px; /* 留言框之間的間距 */
+    background-color: #fff; /* 背景顏色 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 添加陰影 */
+}
+
+.comment-header {
+    display: flex; /* 使用 Flexbox 排版 */
+    margin-bottom: 10px; /* 與留言內容的間距 */
+    font-weight: bold; /* 加粗文字 */
+}
+
+.actions button {
+    background: none; /* 按鈕背景色透明 */
+    border: none; /* 移除按鈕邊框 */
+    color: black; /* 按鈕文字顏色 */
+    cursor: pointer; /* 滑鼠移上按鈕顯示指標 */
+    margin-left: 10px; /* 按鈕之間的間距 */
+    font-size: 14px; /* 設定文字大小 */
+    padding: 5px 10px; /* 調整內距，縮小按鈕大小 */
+}
+
+.actions button:hover {
+    text-decoration: underline; /* 滑鼠移上時添加下劃線 */
+}
+
+.comment p {
+    margin: 0; /* 移除段落的預設邊距 */
+    font-size: 20px; /* 設定文字大小 */
+}
+
+.comment small {
+    color: #666; /* 日期文字顏色 */
+    font-size: 12px; /* 日期文字大小 */
+    padding: 15px 0px 0px 0px;
+}
+
+.reply {
+    background: none; /* 按鈕背景色透明 */
+    border: none; /* 移除按鈕邊框 */
+    color: black; /* 按鈕文字顏色 */
+    cursor: pointer; /* 滑鼠移上按鈕顯示指標 */
+    margin-top: 5px; /* 與留言內容的間距 */
+    font-size: 14px; /* 按鈕文字大小 */
+    padding: 5px 10px 0px 0px;
+}
+
+.reply:hover {
+    background: none; /* 按鈕背景色透明 */
+    text-decoration: underline; /* 滑鼠移上時添加下劃線 */
+}
+
+.comment-input {
+    display: flex;
+    justify-content: space-between; /* 子元素水平分佈 */
+    align-items: center; /* 子元素垂直對齊 */
+    gap: 5px; /* 輸入框與按鈕之間的間距 */
+    margin-top: 20px; /* 與留言列表的間距 */
+}
+
+.comment-input input {
+    padding: 10px; /* 輸入框內距 */
+    border: 1px solid #ddd; /* 邊框樣式 */
+    border-radius: 5px; /* 圓角邊框 */
+    font-size: 14px; /* 字型大小 */
+    margin-bottom: 0px;
+}
+
+.comment-input button {
+    background-color: #304255; /* 按鈕背景顏色 */
+    color: white; /* 按鈕文字顏色 */
+    border: none; /* 移除按鈕邊框 */
+    border-radius: 5px; /* 按鈕圓角 */
+    padding: 10px; /* 按鈕內距 */
+    font-size: 14px; /* 按鈕文字大小 */
+    cursor: pointer; /* 滑鼠移上按鈕顯示指標 */
+    width: 60px;
+}
+
+.comment-input button:hover {
+    background-color: #547eaa; /* 滑鼠移上時改變背景色 */
+}
+
+.space {
+    flex-grow: 1;
+    padding: 10px 300px;
+}
+
+.space2 {
+    flex-grow: 1;
+    padding: 10px 300px 0px 0px;
+}
+
+html, body {
+    height: 100%;            /* 讓頁面高度填滿整個視窗 */
+    margin: 0;               /* 移除預設的邊距 */
+    display: flex;           /* 設定為 flex 容器 */
+  }
+
+span {
+    padding: 10px 0px; /* 按鈕內距 */
+}
+
+.top-bar2 {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    background-color: white;
+    color: black;
+    font-weight: bold;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    font-size: 18px;
+    z-index: 1000;/* 保持在最上層 */
+  }
+
+.top-bar2 a:hover {
+    color: #6d645c;
+}
+  
+  @media (max-width: 600px) {
+    .top-bar2 {
+      font-size: 14px;
+      height: 40px;
+    }
+  }

@@ -1,0 +1,56 @@
+.d1 {
+    font-weight: bold;     /* 讓文字加粗 */
+    font-size: 30px;            /* 文字大小 */
+    padding: 5px 200px;         /* 上下左右內邊距 */
+    justify-content: center; /* 水平置中 */
+    align-items: center;    /* 垂直置中 */
+}
+
+.i1[type="text"] {
+    width: 100%;                 /* 寬度佔滿容器 */
+    padding: 20px;               /* 內邊距 */
+    border: 1px solid #ccc;     /* 邊框顏色 */
+    border-radius: 5px;         /* 圓角邊框 */
+    font-size: 16px;            /* 文字大小 */
+    box-sizing: border-box;     /* 讓 padding 和 border 包含在寬度內 */
+    transition: border-color 0.3s ease;  /* 添加過渡效果 */
+}
+  
+.i1[type="text"]:focus {
+    border-color: #6d645c;      /* 聚焦時邊框顏色變 */
+    outline: none;              /* 移除聚焦時的外框 */
+}
+  
+.bt1 {
+    background-color: #6d645c;  /* 背景顏色 */
+    color: white;               /* 文字顏色 */
+    padding: 5px 100px;         /* 上下左右內邊距 */
+    border: none;               /* 移除邊框 */
+    border-radius: 50px;         /* 圓角邊框 */
+    font-size: 30px;            /* 文字大小 */
+    font-weight: bold;  /* 設置文字為粗體 */
+    cursor: pointer;           /* 當滑鼠懸停時顯示為可點擊 */
+    transition: background-color 0.3s ease;  /* 加入過渡效果 */
+}
+  
+.bt1:hover {
+    background-color: #201b16;  /* 懸停時背景顏色 */
+}
+
+.flex-center1 {
+    display: flex;
+    justify-content: center; /* 水平置中 */
+    align-items: center;    /* 垂直置中 */
+}
+  
+.flex-center1 a {
+    color: #201b16;        /* 設置文字顏色 */
+    text-decoration: none; /* 移除下劃線 */
+    font-weight: bold;     /* 讓文字加粗 */
+    cursor: pointer;      /* 當滑鼠懸停時顯示為可點擊 */
+    transition: color 0.3s ease;  /* 加入過渡效果 */
+}
+  
+.flex-center1 a:hover {
+    color: #6d645c;        /* 懸停時變色 */
+}
