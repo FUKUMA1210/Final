@@ -1,38 +1,25 @@
 import { Route } from "../abstract/Route"
 import { UserController } from "../controller/UserController";
-import { logger } from "../middlewares/log";
 
-export class UserRoute extends Route{
-    
-    protected url: string;
-    protected Contorller = new UserController();
+export class UserRoute extends Route {
 
-    constructor(){
-        super()
-        this.url = '/api/v1/user/'
-        this.setRoutes()
-    }
+  protected url: string;
+  protected Controller = new UserController();
 
-    protected setRoutes(): void {
-        
-        this.router.get(`${this.url}findAll`,(req, res)=>{
-            this.Contorller.findAll(req, res);
-        })
+  constructor() {
+      super()
+      this.url = '/api/v1/user/'
+      this.setRoutes()
+  }
 
-        /**
-         * 新增學生
-         * request body {
-         *  userName: string,
-         *  name: string",
-         *  department: string,
-         *  grade: string,
-         *  class: string,
-         *  Email: string
-         * } 
-         * @returns resp<Student>
-         */
-        this.router.post(`${this.url}insertOne`,(req, res)=>{
-            this.Contorller.insertOne(req, res);
-        })
-    }
+  protected setRoutes(): void {
+
+      this.router.get(`${this.url}getAllUsers`, (req, res) => {
+          this.Controller.getAllUsers(req, res);
+      })
+
+      this.router.post(`${this.url}addUser`, (req, res) => {
+          this.Controller.addUser(req, res);
+      })
+  }
 }
