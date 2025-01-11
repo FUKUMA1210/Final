@@ -151,14 +151,14 @@ npm start
 - **路由**: `/api/v1/comment/addComment`
 - **方法**: POST
 - **請求參數:**:
- ```json
+   ```json
    {
    "username": "user1",
    "message": "This is a test comment."
    }
-```
+   ```
 - **回應格式**:
-```json
+   ```json
    {
    "message": "Comment added successfully.",
    "comment": {
@@ -168,18 +168,18 @@ npm start
       "createdAt": "2025-01-08T12:10:00Z"
    }
    }
-```
+   ```
 #### 6. 更新留言
 - **路由**: `/api/v1/comment/update/:commentId`
 - **方法**: PUT
 - **請求參數:**:
- ```json
+   ```json
    {
    "message": "Updated comment content."
    }
-```
+   ```
 - **回應格式**:
-```json
+   ```json
    {
    "message": "Comment updated successfully.",
    "comment": {
@@ -189,23 +189,23 @@ npm start
       "updatedAt": "2025-01-08T12:20:00Z"
    }
    }
-```
+   ```
 
 #### 7. 刪除留言
 - **路由**: `/api/v1/comment/delete/:commentId`
 - **方法**: DELETE
 - **回應格式:**:
- ```json
+   ```json
    {
    "message": "Comment deleted successfully."
    }
-```
+   ```
 
 #### 8. 取得用戶的所有留言
 - **路由**: `/api/v1/comment/user/:username`
 - **方法**: GET
 - **請求參數:**:
- ```json
+   ```json
    [
    {
       "id": "1",
@@ -221,7 +221,7 @@ npm start
    }
    ]
 
-```
+   ```
 ---
 
 # 架構圖與流程圖
