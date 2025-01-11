@@ -1,6 +1,7 @@
 ## 專案主題與目標
 
-**專案主題**：留言板
+**專案主題**：
+- 留言板
 
 **專案目標**：
 - 建立一個基於前後端分離架構的留言管理系統。
@@ -37,27 +38,30 @@
 2. 安裝 [MongoDB](https://www.mongodb.com/) 並啟動服務。
 
 ### 安裝步驟
+
+1. Clone 專案
 ```bash
-# Clone 專案
 git clone <repository_url>
 cd <project_directory>
-
-# 安裝依賴
+```
+2. 安裝依賴
+```bash
 npm install
-
-# 配置環境變數
+```
+3. 配置環境變數
+```bash
 cp .env.example .env
-# 修改 .env 文件，配置 MongoDB URI
+#修改 .env 文件，配置 MongoDB URI
+```
 
-# 啟動後端服務
+4. 啟動後端服務
+```bash
 npm start
 ```
 
 ---
 
 # API 規格說明文件
-
-## API 一覽表
 
 | 路由                                | HTTP 方法 | 描述              |
 |------------------------------------|-----------|-------------------|
