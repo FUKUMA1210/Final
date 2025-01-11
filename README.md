@@ -225,6 +225,4 @@ npm start
 ---
 
 # 架構圖與流程圖
-
-## 架構圖
 ![image](./images/架構圖與流程圖.png)
