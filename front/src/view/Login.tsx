@@ -25,7 +25,7 @@ export default function Login() {
                 <input type="text" placeholder="輸入使用者名稱" />
                 <input type="text" placeholder="輸入密碼" />
                 <div className='flex-center'>
-                    <button>登入</button>
+                    <button onClick={handleMessageBoard}>登入</button>
                 </div>
                 <div className='flex-center'>
                     <a onClick={handleregister}>註冊</a>
