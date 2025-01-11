@@ -11,11 +11,11 @@ class AuthRoute extends Route_1.Route {
         this.setRoutes();
     }
     setRoutes() {
-        this.router.post(`${this.url}register`, (req, res) => {
-            this.Controller.register(req, res);
-        });
         this.router.post(`${this.url}login`, (req, res) => {
             this.Controller.login(req, res);
+        });
+        this.router.post(`${this.url}logout`, (req, res) => {
+            this.Controller.logout(req, res);
         });
     }
 }

@@ -12,26 +12,28 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CommentService = void 0;
 const commentsSchemas_1 = require("../orm/schemas/commentsSchemas");
 class CommentService {
-    addComment(data) {
+    addComment(username, text) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const newComment = yield commentsSchemas_1.CommentsModel.create(data);
+                const newComment = yield commentsSchemas_1.CommentsModel.create({ username, text });
                 return { code: 201, message: "Comment added", body: newComment };
             }
             catch (error) {
+                console.error("Error in addComment:", error);
                 return { code: 500, message: "Server error", body: null };
             }
         });
     }
-    updateComment(commentId, data) {
+    updateComment(commentId, text) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const updatedComment = yield commentsSchemas_1.CommentsModel.findByIdAndUpdate(commentId, { message: data.message }, { new: true });
+                const updatedComment = yield commentsSchemas_1.CommentsModel.findByIdAndUpdate(commentId, { text }, { new: true });
                 if (!updatedComment)
                     return { code: 404, message: "Comment not found", body: null };
                 return { code: 200, message: "Comment updated", body: updatedComment };
             }
             catch (error) {
+                console.error("Error in updateComment:", error);
                 return { code: 500, message: "Server error", body: null };
             }
         });
@@ -45,6 +47,7 @@ class CommentService {
                 return { code: 200, message: "Comment deleted", body: null };
             }
             catch (error) {
+                console.error("Error in deleteComment:", error);
                 return { code: 500, message: "Server error", body: null };
             }
         });
@@ -58,6 +61,7 @@ class CommentService {
                 return { code: 200, message: "Comments retrieved", body: comments };
             }
             catch (error) {
+                console.error("Error in getCommentsByUsername:", error);
                 return { code: 500, message: "Server error", body: null };
             }
         });

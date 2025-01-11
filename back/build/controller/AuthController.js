@@ -18,15 +18,15 @@ class AuthController extends Controller_1.Controller {
         super();
         this.service = new AuthService_1.AuthService();
     }
-    register(Request, Response) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const resp = yield this.service.register(Request.body);
-            Response.status(resp.code).send(resp);
-        });
-    }
     login(Request, Response) {
         return __awaiter(this, void 0, void 0, function* () {
             const resp = yield this.service.login(Request.body);
+            Response.status(resp.code).send(resp);
+        });
+    }
+    logout(Request, Response) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const resp = yield this.service.logout(Request);
             Response.status(resp.code).send(resp);
         });
     }

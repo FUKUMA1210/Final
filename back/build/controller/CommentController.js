@@ -18,28 +18,60 @@ class CommentController extends Controller_1.Controller {
         super();
         this.service = new CommentService_1.CommentService();
     }
-    addComment(Request, Response) {
+    addComment(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const resp = yield this.service.addComment(Request.body);
-            Response.status(resp.code).send(resp);
+            try {
+                const username = req.body.username || "anonymous";
+                const text = req.body.text;
+                if (!username || !text) {
+                    return res.status(400).send({ code: 400, message: "Username and text are required", body: null });
+                }
+                const resp = yield this.service.addComment(username, text);
+                res.status(resp.code).send(resp);
+            }
+            catch (error) {
+                res.status(500).send({ code: 500, message: "Server error", body: null });
+            }
         });
     }
-    updateComment(Request, Response) {
+    updateComment(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const resp = yield this.service.updateComment(Request.params.commentId, Request.body);
-            Response.status(resp.code).send(resp);
+            try {
+                const { commentId } = req.params;
+                const { text } = req.body;
+                if (!text) {
+                    return res.status(400).send({ code: 400, message: "Text is required", body: null });
+                }
+                const resp = yield this.service.updateComment(commentId, text);
+                res.status(resp.code).send(resp);
+            }
+            catch (error) {
+                res.status(500).send({ code: 500, message: "Server error", body: null });
+            }
         });
     }
-    deleteComment(Request, Response) {
+    deleteComment(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const resp = yield this.service.deleteComment(Request.params.commentId);
-            Response.status(resp.code).send(resp);
+            try {
+                const { commentId } = req.params;
+                const resp = yield this.service.deleteComment(commentId);
+                res.status(resp.code).send(resp);
+            }
+            catch (error) {
+                res.status(500).send({ code: 500, message: "Server error", body: null });
+            }
         });
     }
-    getCommentsByUsername(Request, Response) {
+    getCommentsByUsername(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const resp = yield this.service.getCommentsByUsername(Request.params.username);
-            Response.status(resp.code).send(resp);
+            try {
+                const { username } = req.params;
+                const resp = yield this.service.getCommentsByUsername(username);
+                res.status(resp.code).send(resp);
+            }
+            catch (error) {
+                res.status(500).send({ code: 500, message: "Server error", body: null });
+            }
         });
     }
 }

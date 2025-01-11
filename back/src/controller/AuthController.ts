@@ -11,16 +11,12 @@ export class AuthController extends Controller {
       super();
       this.service = new AuthService();
   }
-  public async register(Request: Request, Response: Response) {
-      const resp = await this.service.register(Request.body)
-      Response.status(resp.code).send(resp)
-  }
 
   public async login(Request: Request, Response: Response) {
       const resp = await this.service.login(Request.body)
       Response.status(resp.code).send(resp)
   }
-  
+
   public async logout(Request: Request, Response: Response) {
     const resp = await this.service.logout(Request)
     Response.status(resp.code).send(resp)

@@ -11,7 +11,7 @@ class CommentRoute extends Route_1.Route {
         this.setRoutes();
     }
     setRoutes() {
-        this.router.post(`${this.url}add`, (req, res) => {
+        this.router.post(`${this.url}addComment`, (req, res) => {
             this.Controller.addComment(req, res);
         });
         this.router.put(`${this.url}update/:commentId`, (req, res) => {

@@ -11,23 +11,11 @@ class UserRoute extends Route_1.Route {
         this.setRoutes();
     }
     setRoutes() {
-        this.router.get(`${this.url}getUserData`, (req, res) => {
-            this.Controller.getUserData(req, res);
+        this.router.get(`${this.url}getAllUsers`, (req, res) => {
+            this.Controller.getAllUsers(req, res);
         });
-        this.router.put(`${this.url}updateUserByID`, (req, res) => {
-            this.Controller.updateUserByID(req, res);
-        });
-        this.router.post(`${this.url}addReservation`, (req, res) => {
-            this.Controller.addReservation(req, res);
-        });
-        this.router.delete(`${this.url}cancelReservationByID`, (req, res) => {
-            this.Controller.cancelReservationByID(req, res);
-        });
-        this.router.get(`${this.url}getAllReservations`, (req, res) => {
-            this.Controller.getAllReservations(req, res);
-        });
-        this.router.get(`${this.url}getReservationByID`, (req, res) => {
-            this.Controller.getReservationByID(req, res);
+        this.router.post(`${this.url}addUser`, (req, res) => {
+            this.Controller.addUser(req, res);
         });
     }
 }

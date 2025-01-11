@@ -10,73 +10,62 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserService = void 0;
+const Service_1 = require("../abstract/Service");
 const usersSchemas_1 = require("../orm/schemas/usersSchemas");
-class UserService {
-    /**
-     * 取得所有使用者
-     * @returns 使用者清單
-     */
+class UserService extends Service_1.Service {
+    // 查詢所有用戶
     getAllUsers() {
         return __awaiter(this, void 0, void 0, function* () {
+            const resp = {
+                code: 200,
+                message: "",
+                body: undefined
+            };
             try {
-                const users = yield usersSchemas_1.usersModel.find();
-                return users.map(user => (Object.assign(Object.assign({}, user.toObject()), { _id: user._id.toString() })));
+                const users = yield usersSchemas_1.usersModel.find().select('-password_hash -__v');
+                resp.body = users;
+                resp.message = "Users retrieved successfully";
             }
             catch (error) {
-                console.error("Error fetching users:", error);
-                throw new Error("Database error");
+                resp.code = 500;
+                resp.message = "Server error";
+                console.error("Error in getAllUsers:", error);
             }
+            return resp;
         });
     }
-    /**
-     * 根據 ID 取得使用者資訊
-     * @param id 使用者 ID
-     * @returns 單一使用者資訊
-     */
-    getUserByID(id) {
+    // 新增用戶
+    addUser(data) {
         return __awaiter(this, void 0, void 0, function* () {
+            const resp = {
+                code: 200,
+                message: "",
+                body: undefined
+            };
             try {
-                const user = yield usersSchemas_1.usersModel.findById(id);
-                if (!user)
-                    return null;
-                return Object.assign(Object.assign({}, user.toObject()), { _id: user._id.toString() });
-            }
-            catch (error) {
-                console.error("Error fetching user by ID:", error);
-                return null;
-            }
-        });
-    }
-    /**
-     * 新增使用者
-     * @param username 使用者名稱
-     * @param password 密碼
-     * @returns 新增結果
-     */
-    addUser(username, password) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
+                const { username, password } = data;
+                if (!username || !password) {
+                    resp.code = 400;
+                    resp.message = "Username and password are required";
+                    return resp;
+                }
                 const existingUser = yield usersSchemas_1.usersModel.findOne({ username });
-                if (existingUser)
-                    throw new Error("Username already exists");
+                if (existingUser) {
+                    resp.code = 400;
+                    resp.message = "Username already exists";
+                    return resp;
+                }
                 const newUser = new usersSchemas_1.usersModel({ username, password });
-                const savedUser = yield newUser.save();
-                return Object.assign(Object.assign({}, savedUser.toObject()), { _id: savedUser._id.toString() });
+                yield newUser.save();
+                resp.message = "User added successfully";
             }
             catch (error) {
-                console.error("Error adding user:", error);
-                throw new Error("Failed to add user");
+                resp.code = 500;
+                resp.message = "Server error";
+                console.error("Error in addUser:", error);
             }
+            return resp;
         });
-    }
-    /**
-     * 實作抽象方法 handleRequest
-     * @param req
-     * @returns
-     */
-    handleRequest(req) {
-        console.log("Handle request:", req);
-        return { message: "Handled request" };
     }
 }
 exports.UserService = UserService;

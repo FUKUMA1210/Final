@@ -15,7 +15,7 @@ export class CommentRoute extends Route {
 
   protected setRoutes(): void {
 
-      this.router.post(`${this.url}add`, (req, res) => {
+      this.router.post(`${this.url}addComment`, (req, res) => {
           this.Controller.addComment(req, res);
       })
 

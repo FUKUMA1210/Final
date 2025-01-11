@@ -18,40 +18,15 @@ class UserController extends Controller_1.Controller {
         super();
         this.service = new UserService_1.UserService();
     }
-    // get user data by token in header
-    getUserData(Request, Response) {
+    addUser(Request, Response) {
         return __awaiter(this, void 0, void 0, function* () {
-            const resp = yield this.service.getUserData(Request);
+            const resp = yield this.service.addUser(Request.body);
             Response.status(resp.code).send(resp);
         });
     }
-    updateUserByID(Request, Response) {
+    getAllUsers(Request, Response) {
         return __awaiter(this, void 0, void 0, function* () {
-            const resp = yield this.service.updateUserByID(Request);
-            Response.status(resp.code).send(resp);
-        });
-    }
-    addReservation(Request, Response) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const resp = yield this.service.addReservation(Request);
-            Response.status(resp.code).send(resp);
-        });
-    }
-    cancelReservationByID(Request, Response) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const resp = yield this.service.cancelReservationByID(Request);
-            Response.status(resp.code).send(resp);
-        });
-    }
-    getAllReservations(Request, Response) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const resp = yield this.service.getAllReservations(Request);
-            Response.status(resp.code).send(resp);
-        });
-    }
-    getReservationByID(Request, Response) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const resp = yield this.service.getReservationByID(Request);
+            const resp = yield this.service.getAllUsers();
             Response.status(resp.code).send(resp);
         });
     }
