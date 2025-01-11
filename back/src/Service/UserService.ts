@@ -1,142 +1,73 @@
-import { Service } from "../abstract/Service";
-import { Student } from "../interfaces/comments";
-import { logger } from "../middlewares/log";
-import { studentsModel } from "../orm/schemas/commentsSchemas";
-import { Document } from "mongoose"
-import { MongoDB } from "../utils/MongoDB";
+import { usersModel } from "../orm/schemas/usersSchemas";
 import { DBResp } from "../interfaces/DBResp";
-import { resp } from "../utils/resp";
 
-type seatInfo = {
-    schoolName:string,
-    department:string,
-    seatNumber:string
-}
-
-export class UserService extends Service {
-
-    public async getAllStudents(): Promise<Array<DBResp<Student>>|undefined> {
-        try {
-            const res:Array<DBResp<Student>> = await studentsModel.find({});
-            return res;
-        } catch (error) {
-            return undefined;
-        }
-        
+export class UserService {
+  /**
+   * 取得所有使用者
+   * @returns 使用者清單
+   */
+  public async getAllUsers(): Promise<DBResp<any>[]> {
+    try {
+      const users = await usersModel.find();
+      return users.map(user => ({
+        ...user.toObject(),
+        _id: user._id.toString(),
+      })) as DBResp<any>[];
+    } catch (error) {
+      console.error("Error fetching users:", error);
+      throw new Error("Database error");
     }
+  }
 
-    /**
-     * 新增學生
-     * @param info 學生資訊
-     * @returns resp
-     */
-    public async insertOne(info: Student): Promise<resp<DBResp<Student>|undefined>>{
-
-        const current = await this.getAllStudents()
-        const resp:resp<DBResp<Student>|undefined> = {
-            code: 200,
-            message: "",
-            body: undefined
-        }
-
-        if (current && current.length>0) {
-            try{
-                const nameValidator = await this.userNameValidator(info.userName);
-                if (current.length>=200) {
-                    resp.message = "student list is full";
-                    resp.code = 403;
-                }else{
-                    if (nameValidator === "驗證通過") {
-                        info.sid = String(current.length+1) ;
-                        info._id = undefined;
-                        const res = new studentsModel(info);
-                        resp.body = await res.save();
-                    }else{
-                        resp.code = 403;
-                        resp.message = nameValidator;
-                    }
-                }
-            } catch(error){
-                resp.message = "server error";
-                resp.code = 500;
-            }
-        }else{
-            resp.message = "server error";
-            resp.code = 500;
-        }
-
-        return resp;
-
+  /**
+   * 根據 ID 取得使用者資訊
+   * @param id 使用者 ID
+   * @returns 單一使用者資訊
+   */
+  public async getUserByID(id: string): Promise<DBResp<any> | null> {
+    try {
+      const user = await usersModel.findById(id);
+      if (!user) return null;
+      return {
+        ...user.toObject(),
+        _id: user._id.toString(),
+      } as DBResp<any>;
+    } catch (error) {
+      console.error("Error fetching user by ID:", error);
+      return null;
     }
+  }
 
-    /**
-     * 學生名字驗證器
-     * @param userName 學生名字
-     * tku ee 0787
-     * ee 科系縮寫
-     *  0787 四碼
-     * 座號檢查，跟之前有重複就噴錯  只能寫沒重複的號碼
-     */
-    public async userNameValidator(userName: string): Promise<
-    '學生名字格式不正確，應為 tku + 科系縮寫 + 四碼座號，例如: tkubm1760' | '座號已存在' | '校名必須為 tku' | '座號格式不正確，必須為四位數字。' | '驗證通過'
-    > {
+  /**
+   * 新增使用者
+   * @param username 使用者名稱
+   * @param password 密碼
+   * @returns 新增結果
+   */
+  public async addUser(username: string, password: string): Promise<DBResp<any>> {
+    try {
+      const existingUser = await usersModel.findOne({ username });
+      if (existingUser) throw new Error("Username already exists");
 
-        if (userName.length < 7) { 
-            return ('學生名字格式不正確，應為 tku + 科系縮寫 + 四碼座號，例如: tkubm1760');
-        }
-
-        const info = this.userNameFormator(userName);
-
-        if (info.schoolName !== 'tku') {
-            return '校名必須為 tku';
-        }
-    
-        // 驗證座號(正則不想寫可以給 gpt 寫, 記得測試就好)
-        const seatNumberPattern = /^\d{4}$/; // 驗證4個數字
-        
-        if (!seatNumberPattern.test(info.seatNumber)) {
-            return '座號格式不正確，必須為四位數字。';
-        }
-
-        if (await this.existingSeatNumbers(info.seatNumber)) {
-            return '座號已存在'
-        }
-
-        return '驗證通過'
-        
+      const newUser = new usersModel({ username, password });
+      const savedUser = await newUser.save();
+      return {
+        ...savedUser.toObject(),
+        _id: savedUser._id.toString(),
+      } as DBResp<any>;
+    } catch (error) {
+      console.error("Error adding user:", error);
+      throw new Error("Failed to add user");
     }
+  }
 
-    /**
-     * 用戶名格式化
-     * @param userName 用戶名
-     * @returns seatInfo
-     */
-    public userNameFormator(userName: string){
-        const info:seatInfo = {
-            schoolName: userName.slice(0, 3),
-            department: userName.slice(3, userName.length - 4),
-            seatNumber: userName.slice(-4)
-        }
-        return info
-    }
-
-    /**
-     * 檢查用戶名是否存在
-     * @param SeatNumber 
-     * @returns boolean
-     */
-    public async existingSeatNumbers(SeatNumber:string):Promise<boolean>{
-        const students = await this.getAllStudents();
-        let exist = false
-        if (students) {
-            students.forEach((student)=>{
-                const info = this.userNameFormator(student.userName)
-                if (info.seatNumber === SeatNumber) {
-                    exist = true;
-                }
-            })
-        }
-        return exist
-    }
-
+  /**
+   * 實作抽象方法 handleRequest
+   * @param req 
+   * @returns 
+   */
+  public handleRequest(req: any): any {
+    console.log("Handle request:", req);
+    return { message: "Handled request" };
+  }
 }
