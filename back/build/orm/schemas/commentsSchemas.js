@@ -7,4 +7,4 @@ exports.commentsSchemas = new mongoose_1.Schema({
     username: { type: String, required: true },
     timestamp: { type: Date, default: Date.now },
 });
-exports.CommentsModel = (0, mongoose_1.model)('comments', exports.commentsSchemas);
+exports.CommentsModel = (0, mongoose_1.model)("comments", exports.commentsSchemas);
