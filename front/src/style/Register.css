@@ -4,6 +4,7 @@
     padding: 5px 200px;         /* 上下左右內邊距 */
     justify-content: center; /* 水平置中 */
     align-items: center;    /* 垂直置中 */
+    text-align: center;
 }
 
 .i1[type="text"] {
