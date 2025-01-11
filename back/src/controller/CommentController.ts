@@ -1,45 +1,38 @@
+import { Controller } from "../abstract/Controller";
 import { Request, Response } from "express";
+import { resp } from "../utils/resp";
+import { DBResp } from "../interfaces/DBResp";
 import { CommentService } from "../Service/CommentService";
+require('dotenv').config();
 
-export class CommentController {
-  private service = new CommentService();
+export class CommentController extends Controller {
+  protected service: CommentService;
 
-  async addComment(req: Request, res: Response) {
-    try {
-      const result = await this.service.addComment(req.body);
-      res.status(result.code).json(result);
-    } catch (error) {
-      res.status(500).json({ code: 500, message: "Server error" });
-    }
+  constructor() {
+    super();
+    this.service = new CommentService();
   }
 
-  async updateComment(req: Request, res: Response) {
-    try {
-      const { commentId } = req.params;
-      const result = await this.service.updateComment(commentId, req.body);
-      res.status(result.code).json(result);
-    } catch (error) {
-      res.status(500).json({ code: 500, message: "Server error" });
-    }
+  public async addComment(Request: Request, Response: Response) {
+    const resp = await this.service.addComment(Request.body);
+    Response.status(resp.code).send(resp);
   }
 
-  async deleteComment(req: Request, res: Response) {
-    try {
-      const { commentId } = req.params;
-      const result = await this.service.deleteComment(commentId);
-      res.status(result.code).json(result);
-    } catch (error) {
-      res.status(500).json({ code: 500, message: "Server error" });
-    }
+  public async updateComment(Request: Request, Response: Response) {
+    const resp = await this.service.updateComment(
+      Request.params.commentId,
+      Request.body
+    );
+    Response.status(resp.code).send(resp);
   }
 
-  async getCommentsByUsername(req: Request, res: Response) {
-    try {
-      const { username } = req.params;
-      const result = await this.service.getCommentsByUsername(username);
-      res.status(result.code).json(result);
-    } catch (error) {
-      res.status(500).json({ code: 500, message: "Server error" });
-    }
+  public async deleteComment(Request: Request, Response: Response) {
+    const resp = await this.service.deleteComment(Request.params.commentId);
+    Response.status(resp.code).send(resp);
+  }
+
+  public async getCommentsByUsername(Request: Request, Response: Response) {
+    const resp = await this.service.getCommentsByUsername(Request.params.username);
+    Response.status(resp.code).send(resp);
   }
 }

@@ -1,11 +1,34 @@
-import express from "express";
+import { Router, Request, Response } from "express";
 import { CommentController } from "../controller/CommentController";
+import { Route } from "../abstract/Route";
 
-const router = express.Router();
-const commentController = new CommentController();
-router.post("/", commentController.addComment.bind(commentController));
-router.put("/:commentId", commentController.updateComment.bind(commentController));
-router.delete("/:commentId", commentController.deleteComment.bind(commentController));
-router.get("/user/:username", commentController.getCommentsByUsername.bind(commentController));
+export class CommentRoute extends Route {
 
-export default router;
+  protected url: string;
+  protected Controller = new CommentController();
+
+  constructor() {
+      super()
+      this.url = '/api/v1/comment/'
+      this.setRoutes()
+  }
+
+  protected setRoutes(): void {
+
+      this.router.post(`${this.url}add`, (req, res) => {
+          this.Controller.addComment(req, res);
+      })
+
+      this.router.put(`${this.url}update/:commentId`, (req, res) => {
+          this.Controller.updateComment(req, res);
+      })
+
+      this.router.delete(`${this.url}delete/:commentId`, (req, res) => {
+          this.Controller.deleteComment(req, res);
+      })
+
+      this.router.get(`${this.url}user/:username`, (req, res) => {
+          this.Controller.getCommentsByUsername(req, res);
+      })
+  }
+}

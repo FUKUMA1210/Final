@@ -29,6 +29,7 @@
   "version": "1.0.0",
   "main": "build/app.js",
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/cors": "^2.8.13",
     "@types/jasmine": "^4.3.1",
     "@types/jquery": "^3.5.16",

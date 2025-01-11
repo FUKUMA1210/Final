@@ -1,78 +1,127 @@
 import bcrypt from "bcrypt";
-import { Service } from "../abstract/Service";
 import { usersModel } from "../orm/schemas/usersSchemas";
-import { adminsModel } from "../orm/schemas/adminsSchemas";
 import { resp } from "../utils/resp";
-import { DBResp } from "../interfaces/DBResp";
-import { Document } from "mongoose";
 import { generateToken, verifyToken } from "../utils/token";
-import { AuthResponse } from "../interfaces/AuthResponse";
 import { logger } from "../middlewares/log";
-import { Request, Response } from "express";
+import { Request } from "express";
 
-export class AuthService extends Service {
-
-public async register(data: { username: string, password: string }): Promise<resp<DBResp<Document> | undefined>> {
-    const resp: resp<DBResp<Document> | undefined> = {
-        code: 200,
-        message: "",
-        body: undefined
+export class AuthService {
+  /**
+   * 用戶註冊
+   * @param data 包含 username 和 password 的對象
+   */
+  public async register(data: { username: string; password: string }): Promise<resp<string>> {
+    const response: resp<string> = {
+      code: 200,
+      message: "",
+      body: "",
     };
+
     try {
-        const { username, password } = data;
+      const { username, password } = data;
 
-        if (!username || !password) {
-            resp.code = 400;
-            resp.message = "Username and password are required";
-            return resp;
-        }
+      if (!username || !password) {
+        response.code = 400;
+        response.message = "Username and password are required";
+        return response;
+      }
 
-        const existingUser = await usersModel.findOne({ username });
-        if (existingUser) {
-            resp.code = 400;
-            resp.message = "Username already exists";
-            return resp;
-        }
+      const existingUser = await usersModel.findOne({ username });
+      if (existingUser) {
+        response.code = 400;
+        response.message = "Username already exists";
+        return response;
+      }
 
-        const password_hash = await bcrypt.hash(password, 10);
-        const newUser = new usersModel({ username, password_hash });
-        await newUser.save();
-        logger.info(`User ${username} registered`);
-        resp.message = "Registration succeeded";
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const newUser = new usersModel({ username, password: hashedPassword });
+      await newUser.save();
+
+      response.message = "User registered successfully";
     } catch (error) {
-        resp.code = 500;
-        resp.message = "Server error";
-        console.error("Error in register:", error);
+      response.code = 500;
+      response.message = "Server error";
+      console.error("Error in register:", error);
     }
-    return resp;
-}
 
-public async login(data: { username: string, password: string }): Promise<resp<AuthResponse | undefined>> {
-    const resp: resp<AuthResponse | undefined> = {
-        code: 200,
-        message: "",
-        body: undefined
+    return response;
+  }
+
+  /**
+   * 用戶登入
+   * @param data 包含 username 和 password 的對象
+   */
+  public async login(data: { username: string; password: string }): Promise<resp<string>> {
+    const response: resp<string> = {
+      code: 200,
+      message: "",
+      body: "",
     };
+
     try {
-        const { username, password } = data;
-        const user = await usersModel.findOne({ username }) || await adminsModel.findOne({ username });
+      const { username, password } = data;
 
-        if (!user || !(await bcrypt.compare(password, user.password_hash))) {
-            resp.code = 400;
-            resp.message = "Invalid username or password";
-            return resp;
-        }
+      if (!username || !password) {
+        response.code = 400;
+        response.message = "Username and password are required";
+        return response;
+      }
 
-        const role = user instanceof usersModel ? "user" : "admin";
-        const token = generateToken(user._id, role);
-        resp.body = { token };
-        logger.info(`${role === "admin" ? "Admin" : "User"} ${username} logged in`);
-        resp.message = "Login succeeded";
+      const user = await usersModel.findOne({ username });
+      if (!user || !(await bcrypt.compare(password, user.password))) {
+        response.code = 400;
+        response.message = "Invalid username or password";
+        return response;
+      }
+
+      const token = generateToken(user._id, "user");
+      response.body = token;
+      response.message = "Login succeeded";
     } catch (error) {
-        resp.code = 500;
-        resp.message = "Server error";
-        console.error("Error in login:", error);
+      response.code = 500;
+      response.message = "Server error";
+      console.error("Error in login:", error);
     }
-    return resp;
-}
+
+    return response;
+  }
+
+  /**
+   * 用戶登出
+   * @param Request Express 的請求對象
+   */
+  public async logout(Request: Request): Promise<resp<string>> {
+    const response: resp<string> = {
+      code: 200,
+      message: "",
+      body: "",
+    };
+
+    try {
+      const authHeader = Request.headers.authorization;
+      if (!authHeader) {
+        response.code = 400;
+        response.message = "Token is required";
+        return response;
+      }
+
+      const token = authHeader.split(" ")[1];
+      const decoded = verifyToken(token);
+
+      if (!decoded) {
+        response.code = 400;
+        response.message = "Invalid token";
+        return response;
+      }
+
+      response.message = "Logout succeeded";
+      logger.info(`User logged out successfully`);
+    } catch (error) {
+      response.code = 500;
+      response.message = "Server error";
+      console.error("Error in logout:", error);
+    }
+
+    return response;
+  }
 }

@@ -5,6 +5,5 @@ export abstract class Controller{
     protected abstract service:Service;
     constructor(){
         
-        abstract handleRequest(req: Request, res: Response): void;
     }
 }

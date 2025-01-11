@@ -1,16 +1,25 @@
-import { Router } from "express";
+import { Route } from "../abstract/Route"
 import { UserController } from "../controller/UserController";
 
-const router = Router();
-const userController = new UserController();
+export class UserRoute extends Route {
 
+  protected url: string;
+  protected Controller = new UserController();
 
-router.get("/", async (req, res) => {
-  await userController.getAllUsers(req, res);
-});
+  constructor() {
+      super()
+      this.url = '/api/v1/user/'
+      this.setRoutes()
+  }
 
-router.post("/", async (req, res) => {
-  await userController.addUser(req, res);
-});
+  protected setRoutes(): void {
 
-export default router;
+      this.router.get(`${this.url}getAllUsers`, (req, res) => {
+          this.Controller.getAllUsers(req, res);
+      })
+
+      this.router.post(`${this.url}addUser`, (req, res) => {
+          this.Controller.addUser(req, res);
+      })
+  }
+}
