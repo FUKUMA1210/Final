@@ -3,7 +3,6 @@ import { Request, Response } from "express";
 import { UserService } from "../Service/UserService";
 import { resp } from "../utils/resp";
 import { DBResp } from "../interfaces/DBResp";
-import { Student } from "../interfaces/comments";
 
 require("dotenv").config();
 
@@ -15,35 +14,41 @@ export class UserController extends Controller {
     this.service = new UserService();
   }
 
-  public async findAll(req: Request, res: Response) {
-    const response: resp<Array<DBResp<Student>> | undefined> = {
-      code: 200,
-      message: "",
-      body: undefined,
-    };
-
+  /**
+   * 取得使用者清單
+   */
+  public async getAllUsers(req: Request, res: Response) {
     try {
-      const dbResp = await this.service.getAllStudents();
-      if (dbResp) {
-        response.body = dbResp;
-        response.message = "Find success";
-        res.send(response);
-      } else {
-        throw new Error("Server error");
-      }
+      const result: DBResp = await this.service.getAllUsers();
+      res.status(result.code).send(result);
     } catch (error) {
-      response.code = 500;
-      response.message = "Server error";
-      res.status(500).send(response);
+      res.status(500).send(resp(false, "Server error", null));
     }
   }
 
-  public async insertOne(req: Request, res: Response) {
+  /**
+   * 根據 ID 取得使用者資訊
+   */
+  public async getUserByID(req: Request, res: Response) {
     try {
-      const resp = await this.service.insertOne(req.body);
-      res.status(resp.code).send(resp);
+      const userId = req.params.id;
+      const result: DBResp = await this.service.getUserByID(userId);
+      res.status(result.code).send(result);
     } catch (error) {
-      res.status(500).send({ code: 500, message: "Server error" });
+      res.status(500).send(resp(false, "Server error", null));
+    }
+  }
+
+  /**
+   * 新增使用者
+   */
+  public async addUser(req: Request, res: Response) {
+    try {
+      const userData = req.body;
+      const result: DBResp = await this.service.addUser(userData);
+      res.status(result.code).send(result);
+    } catch (error) {
+      res.status(500).send(resp(false, "Server error", null));
     }
   }
 }

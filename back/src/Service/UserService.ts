@@ -1,7 +1,7 @@
 import { Service } from "../abstract/Service";
 import { Student } from "../interfaces/comments";
 import { logger } from "../middlewares/log";
-import { studentsModel } from "../orm/schemas/studentSchemas";
+import { studentsModel } from "../orm/schemas/commentsSchemas";
 import { Document } from "mongoose"
 import { MongoDB } from "../utils/MongoDB";
 import { DBResp } from "../interfaces/DBResp";
