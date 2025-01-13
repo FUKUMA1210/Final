@@ -6,13 +6,13 @@ const pageController_1 = require("../controller/pageController");
 class PageRoute extends Route_1.Route {
     constructor() {
         super();
-        this.url = "/";
-        this.Controller = new pageController_1.PageController();
+        this.Contorller = new pageController_1.PageController();
+        this.url = '/';
         this.setRoutes();
     }
     setRoutes() {
-        this.router.get(this.url, (req, res) => {
-            this.Controller.sendPage(req, res);
+        this.router.get(`${this.url}`, (req, res) => {
+            this.Contorller.sendPage(req, res);
         });
     }
 }

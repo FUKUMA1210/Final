@@ -1,157 +1,114 @@
+const api_base = import.meta.env.VITE_API_BASE;
+
+interface RequestOptions {
+    headers?: HeadersInit;
+}
+
 /**
- * 異步呼叫api, 只可用響應體為 json 的 api
- * @param api 要呼叫的api
- * @returns json 結果
+ * 異步 GET 請求
  */
-export async function asyncGet(api: string):Promise<any>{
+export async function asyncGet(api: string, options: RequestOptions = {}): Promise<any> {
     try {
-        const res: Response = await fetch(api)
-        try {
-            return await res.json()
-        } catch (error) {
-            return error
-        }
+        const res: Response = await fetch(`${api_base}${api}`, {
+            method: 'GET',
+            headers: {
+                'Access-Control-Allow-Origin': api_base,
+                'Content-Type': 'application/json',
+                ...options.headers,
+            },
+            mode: 'cors',
+        });
+        return await res.json();
     } catch (error) {
-        return error
-    }
-}
-
-export async function asyncPost(api: string, body: {} | FormData) {
-    const res: Response = await fetch(api, {
-        method: 'POST',
-        credentials: 'include',
-        headers:new Headers({
-            'Access-Control-Allow-Origin':"http://localhost:5173/",
-            'content-Type':"application/json"
-        }),
-        body: body instanceof FormData?body:JSON.stringify(body),
-        mode:"cors"
-    })
-    try {
-        let data = res.json()
-        return data
-    } catch (error) {
-        console.error(error)
-    }
-}
-
-export async function asyncPatch(api: string, body: {} | FormData) {
-    const res: Response = await fetch(api, {
-        method: 'PATCH',
-        headers:new Headers({
-            'Access-Control-Allow-Origin':"http://localhost:5173/",
-        }),
-        body: body instanceof FormData?body:JSON.stringify(body),
-        mode:"cors"
-    })
-    try {
-        let data = res.json()
-        return data
-    } catch (error) {
-        console.error(error)
+        console.error('Error in asyncGet:', error);
+        throw error;
     }
 }
 
 /**
- * 異步 PUT 請求
- * @param api 要呼叫的 API URL
- * @param body 請求的資料（JSON 或 FormData）
- * @returns JSON 結果
+ * 異步 POST 請求
  */
-export async function asyncPut(api: string, body: {} | FormData): Promise<any> {
-    const res: Response = await fetch(api, {
-        method: 'PUT',
-        credentials: 'include',
-        headers: new Headers({
-            'Access-Control-Allow-Origin': "http://localhost:5173/",
-            'content-Type': body instanceof FormData ? 'multipart/form-data' : 'application/json',
-        }),
-        body: body instanceof FormData ? body : JSON.stringify(body),
-        mode: "cors",
-    });
-
+export async function asyncPost(api: string, body: {} | FormData, options: RequestOptions = {}): Promise<any> {
     try {
-        let data = await res.json();
-        return data;
+        const res: Response = await fetch(`${api_base}${api}`, {
+            method: 'POST',
+            headers: {
+                'Access-Control-Allow-Origin': api_base,
+                'Content-Type': body instanceof FormData ? 'multipart/form-data' : 'application/json',
+                ...options.headers,
+            },
+            body: body instanceof FormData ? body : JSON.stringify(body),
+            mode: 'cors',
+        });
+        return await res.json();
     } catch (error) {
-        console.error(error);
+        console.error('Error in asyncPost:', error);
+        throw error;
+    }
+}
+
+/**
+ * 異步 PATCH 請求
+ */
+export async function asyncPatch(api: string, body: {} | FormData, options: RequestOptions = {}): Promise<any> {
+    try {
+        const res: Response = await fetch(`${api_base}${api}`, {
+            method: 'PATCH',
+            headers: {
+                'Access-Control-Allow-Origin': api_base,
+                'Content-Type': body instanceof FormData ? 'multipart/form-data' : 'application/json',
+                ...options.headers,
+            },
+            body: body instanceof FormData ? body : JSON.stringify(body),
+            mode: 'cors',
+        });
+        return await res.json();
+    } catch (error) {
+        console.error('Error in asyncPatch:', error);
+        throw error;
     }
 }
 
 /**
  * 異步 DELETE 請求
- * @param api 要呼叫的 API URL
- * @param body 可選，請求的資料（JSON 或 FormData）
- * @returns JSON 結果
  */
-export async function asyncDelete(api: string, body?: {} | FormData): Promise<any> {
-    const res: Response = await fetch(api, {
-        method: 'DELETE',
-        credentials: 'include',
-        headers: new Headers({
-            'Access-Control-Allow-Origin': "http://localhost:5173/",
-            'content-Type': body instanceof FormData ? 'multipart/form-data' : 'application/json',
-        }),
-        body: body ? (body instanceof FormData ? body : JSON.stringify(body)) : undefined,
-        mode: "cors",
-    });
-
+export async function asyncDelete(api: string, body?: {} | FormData, options: RequestOptions = {}): Promise<any> {
     try {
-        let data = await res.json();
-        return data;
-    } catch (error) {
-        console.error(error);
-    }
-}
-
-import { api } from '../enum/api';
-
-// 添加留言函數
-export async function addComment(text: string): Promise<any> {
-    try {
-        const response = await fetch(api.addComment, {
-            method: 'POST',
+        const res: Response = await fetch(`${api_base}${api}`, {
+            method: 'DELETE',
             headers: {
-                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': api_base,
+                'Content-Type': body instanceof FormData ? 'multipart/form-data' : 'application/json',
+                ...options.headers,
             },
-            body: JSON.stringify({ text }),
+            body: body ? (body instanceof FormData ? body : JSON.stringify(body)) : undefined,
+            mode: 'cors',
         });
-        if (!response.ok) {
-            throw new Error('Failed to add comment');
-        }
-        return await response.json();
+        return await res.json();
     } catch (error) {
-        console.error('Error adding comment:', error);
+        console.error('Error in asyncDelete:', error);
         throw error;
     }
 }
 
-// 更新留言函數
-export async function updateComment(id: number, text: string): Promise<any> {
+/**
+ * 異步 PUT 請求
+ */
+export async function asyncPut(api: string, body: {} | FormData, options: RequestOptions = {}): Promise<any> {
     try {
-        const response = await fetch(`${api.updateComment}/${id}`, {
-            method: 'PATCH',
+        const res: Response = await fetch(`${api_base}${api}`, {
+            method: 'PUT',
             headers: {
-                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': api_base,
+                'Content-Type': body instanceof FormData ? 'multipart/form-data' : 'application/json',
+                ...options.headers,
             },
-            body: JSON.stringify({ text }),
+            body: body instanceof FormData ? body : JSON.stringify(body),
+            mode: 'cors',
         });
-        if (!response.ok) {
-            throw new Error('Failed to update comment');
-        }
-        return await response.json();
+        return await res.json();
     } catch (error) {
-        console.error('Error updating comment:', error);
+        console.error('Error in asyncPut:', error);
         throw error;
     }
 }
-
-// 假設 api.getAllComments 是正確的 API 路徑
-export async function getAllComments(): Promise<Comment[]> {
-    const response = await fetch(api.getAllUsers); // 這裡改為正確的端點
-    if (!response.ok) {
-        throw new Error('Failed to fetch comments');
-    }
-    return await response.json();
-}
-
