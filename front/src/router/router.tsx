@@ -1,34 +1,24 @@
-import { createBrowserRouter } from "react-router";
-import Landing from "../view/Landing";
-import Login from "../view/Login";
-import AddUser from "../view/AddUser";
-import AddComment from "../view/AddComment";
-import Comments from "../view/Comments";
-import UpdateComment from "../view/UpdateComment";
+import { createHashRouter } from "react-router";
+import Login from '../view/Login';
+import Frontpage from '../view/Frontpage';
+import Register from '../view/register'
+import MessageBoard from '../view/MessageBoard';
 
-export const router = createBrowserRouter([
+export const router = createHashRouter([
     {
-        path: '/',
-        element: <Landing />,
+        path: "/",
+        element: <Frontpage />,
     },
     {
-        path: '/login',
+        path: "/Login",
         element: <Login />,
     },
     {
-        path: '/add-user',
-        element: <AddUser />,
+        path: "/Register",
+        element: <Register />,
     },
     {
-        path: '/add-comment',
-        element: <AddComment />
+        path: "/MessageBoard",
+        element: <MessageBoard />,
     },
-    {
-        path: '/comments',
-        element: <Comments />
-    },
-    {
-        path: '/update-comment/:commentId',
-        element: <UpdateComment />
-    },
-]);
+])
