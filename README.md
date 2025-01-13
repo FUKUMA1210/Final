@@ -56,7 +56,7 @@ cp .env.example .env
 
 4. 啟動後端服務
 ```bash
-npm start
+npm run dev
 ```
 
 ---
