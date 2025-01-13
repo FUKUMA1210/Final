@@ -91,8 +91,9 @@ npm run dev
 - **回應格式**:
   ```json
    {
+   "code": 200,
    "message": "Login successful.",
-   "token": "your_jwt_token_here"
+   "body": ""
    }
   ```
 
@@ -102,7 +103,9 @@ npm run dev
 - **回應格式**:
   ```json
    {
-   "message": "Logout successful."
+   "code": 200,
+   "message": "Logout succeeded",
+   "body": ""
    }
   ```
 
@@ -119,12 +122,8 @@ npm run dev
 - **回應格式**:
   ```json
    {
-   "message": "User created successfully.",
-   "user": {
-      "id": "1",
-      "username": "newUser",
-      "createdAt": "2025-01-08T12:00:00Z"
-   }
+   "code": 200,
+   "message": "User added successfully"
    }
   ```
 
@@ -133,18 +132,37 @@ npm run dev
 - **方法**: GET
 - **回應格式**:
   ```json
-   [
-   {
-      "id": "1",
-      "username": "user1",
-      "createdAt": "2025-01-08T12:00:00Z"
-   },
-   {
-      "id": "2",
-      "username": "user2",
-      "createdAt": "2025-01-08T12:05:00Z"
-   }
-   ]
+  {
+    "code": 200,
+    "message": "Users retrieved successfully",
+    "body": [
+        {
+            "_id": "678119bce34268b21e2f0712",
+            "username": "user123",
+            "password": "hashed_password_123"
+        },
+        {
+            "_id": "678119bce34268b21e2f0713",
+            "username": "user456",
+            "password": "hashed_password_456"
+        },
+        {
+            "_id": "678242748ad9d90eae4112d8",
+            "username": "test",
+            "password": "test"
+        },
+        {
+            "_id": "67851144b430a5892012c8e3",
+            "username": "FUKUMA",
+            "password": "123456"
+        },
+        {
+            "_id": "6785167ab430a5892012c8e8",
+            "username": "newUser",
+            "password": "securePassword"
+        }
+    ]
+}
   ```
 
 #### 5. 新增留言
@@ -153,20 +171,22 @@ npm run dev
 - **請求參數:**:
    ```json
    {
-   "username": "user1",
-   "message": "This is a test comment."
+   "username": "FUKUMA",
+   "text": "This is a test comment."
    }
    ```
 - **回應格式**:
    ```json
    {
-   "message": "Comment added successfully.",
-   "comment": {
-      "id": "1",
-      "username": "user1",
-      "message": "This is a test comment.",
-      "createdAt": "2025-01-08T12:10:00Z"
-   }
+    "code": 201,
+    "message": "Comment added",
+    "body": {
+        "text": "This is a test comment.",
+        "username": "FUKUMA",
+        "_id": "67851795b430a5892012c8eb",
+        "timestamp": "2025-01-13T13:39:33.310Z",
+        "__v": 0
+    }
    }
    ```
 #### 6. 更新留言
@@ -180,15 +200,17 @@ npm run dev
    ```
 - **回應格式**:
    ```json
-   {
-   "message": "Comment updated successfully.",
-   "comment": {
-      "id": "1",
-      "username": "user1",
-      "message": "Updated comment content.",
-      "updatedAt": "2025-01-08T12:20:00Z"
-   }
-   }
+  {
+    "code": 200,
+    "message": "Comment updated",
+    "body": {
+        "_id": "67851795b430a5892012c8eb",
+        "text": "Updated comment content.",
+        "username": "FUKUMA",
+        "timestamp": "2025-01-13T13:39:33.310Z",
+        "__v": 0
+    }
+  }
    ```
 
 #### 7. 刪除留言
@@ -196,9 +218,11 @@ npm run dev
 - **方法**: DELETE
 - **回應格式:**:
    ```json
-   {
-   "message": "Comment deleted successfully."
-   }
+  {
+    "code": 200,
+    "message": "Comment deleted",
+    "body": null
+  }
    ```
 
 #### 8. 取得用戶的所有留言
@@ -206,20 +230,19 @@ npm run dev
 - **方法**: GET
 - **請求參數:**:
    ```json
-   [
    {
-      "id": "1",
-      "username": "user1",
-      "message": "First comment.",
-      "createdAt": "2025-01-08T12:10:00Z"
-   },
-   {
-      "id": "2",
-      "username": "user1",
-      "message": "Second comment.",
-      "createdAt": "2025-01-08T12:15:00Z"
-   }
-   ]
+    "code": 200,
+    "message": "Comments retrieved",
+    "body": [
+        {
+            "_id": "6784fc27184281f90ded4da3",
+            "text": "測試留言",
+            "username": "anonymous",
+            "timestamp": "2025-01-13T11:42:31.689Z",
+            "__v": 0
+        }
+    ]
+  }
 
    ```
 ---
@@ -230,6 +253,6 @@ npm run dev
 ---
 
 ## 分工表
-   - 前端：鍾珺如、周朕聿
-   - 後端：姚郁君、郭玉琦
+   - 前端CSS：鍾珺如、周朕聿
+   - 後端、前端：姚郁君、郭玉琦
    - 文件與繪圖：羅畹宜
