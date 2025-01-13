@@ -32,6 +32,7 @@ export default function MessageBoard() {
     const [editText, setEditText] = useState('');
     const [replyText, setReplyText] = useState('');
     const [replyTo, setReplyTo] = useState<number | null>(null); // 用來標記正在回復的留言
+    const [searchText, setSearchText] = useState(''); // 搜尋文字的 state
 
 
     const navigate = useNavigate();
@@ -107,12 +108,24 @@ export default function MessageBoard() {
         navigate('/');
     };
 
+    // 篩選留言
+    const filteredComments = comments.filter(comment =>
+        comment.text.toLowerCase().includes(searchText.toLowerCase()) ||
+        comment.user.toLowerCase().includes(searchText.toLowerCase())
+    );
+
     return (
         <div>
             <div className="top-bar2">
                 <a onClick={handleLogout}>登出&nbsp;&nbsp;&nbsp;</a>
             </div>
+            <div className='space'></div>
+            <div className='space'></div>
+            <div className='space'></div>
+            <div className='space'></div>
+            <div className='space'></div>
             <h1>想說什麼？</h1>
+            <input type="text" placeholder="輸入搜尋關鍵字" value={searchText}onChange={e => setSearchText(e.target.value)}/>
             <div className="message-board">
                 <div className="comment-list">
                     {comments.map(comment => (
